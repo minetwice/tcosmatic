@@ -36,23 +36,44 @@ public class CapeSelectionScreen extends Screen {
     protected void init() {
         super.init();
         
+        int buttonY = this.height - 35;
+        int buttonSpacing = 5;
+        
         // Save button
         this.addDrawableChild(ButtonWidget.builder(
             Text.literal("Save & Quit"),
             button -> saveAndClose()
-        ).dimensions(this.width - 120, this.height - 35, 100, 20).build());
+        ).dimensions(this.width - 120, buttonY, 100, 20).build());
         
         // Refresh button
         this.addDrawableChild(ButtonWidget.builder(
             Text.literal("Refresh"),
             button -> refreshCapes()
-        ).dimensions(20, this.height - 35, 80, 20).build());
+        ).dimensions(20, buttonY, 80, 20).build());
         
         // Remove cape button
         this.addDrawableChild(ButtonWidget.builder(
             Text.literal("Remove Cape"),
             button -> removeCape()
-        ).dimensions(110, this.height - 35, 100, 20).build());
+        ).dimensions(110, buttonY, 100, 20).build());
+        
+        // Button position cycle button
+        this.addDrawableChild(ButtonWidget.builder(
+            Text.literal("Button: " + ConfigManager.getConfig().buttonPosition.getDisplayName()),
+            button -> {
+                cycleButtonPosition();
+                button.setMessage(Text.literal("Button: " + ConfigManager.getConfig().buttonPosition.getDisplayName()));
+            }
+        ).dimensions(220, buttonY, 150, 20).build());
+    }
+    
+    private void cycleButtonPosition() {
+        ConfigManager.Config config = ConfigManager.getConfig();
+        ConfigManager.Config.ButtonPosition[] positions = ConfigManager.Config.ButtonPosition.values();
+        int currentIndex = config.buttonPosition.ordinal();
+        int nextIndex = (currentIndex + 1) % positions.length;
+        config.buttonPosition = positions[nextIndex];
+        ConfigManager.save();
     }
     
     @Override
@@ -236,4 +257,4 @@ public class CapeSelectionScreen extends Screen {
     public boolean shouldPause() {
         return false;
     }
-          }
+}
