@@ -22,14 +22,24 @@ public abstract class TitleScreenMixin extends Screen {
     private void addTcosmaticButton(CallbackInfo ci) {
         // Only show button if capes exist
         if (!CapeManager.getAllCapes().isEmpty()) {
+            // Position button in top-right corner for easy access
+            int buttonWidth = 98;
+            int buttonHeight = 20;
+            int padding = 4;
+            
             this.addDrawableChild(ButtonWidget.builder(
-                Text.literal("Tcosmatic"),
+                Text.literal("🎨 Tcosmatic"),
                 button -> {
                     if (this.client != null) {
                         this.client.setScreen(new CapeSelectionScreen());
                     }
                 }
-            ).dimensions(this.width / 2 - 100, this.height / 4 + 48 + 72 + 12, 200, 20).build());
+            ).dimensions(
+                this.width - buttonWidth - padding,  // Right side
+                padding,                              // Top
+                buttonWidth, 
+                buttonHeight
+            ).build());
         }
     }
 }
