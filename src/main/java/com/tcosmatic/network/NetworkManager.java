@@ -62,7 +62,7 @@ public class NetworkManager {
         
         public static final PacketCodec<RegistryByteBuf, CapeSyncPayload> CODEC = 
             PacketCodec.tuple(
-                PacketCodecs.UUID, CapeSyncPayload::playerId,
+                createUuidCodec(), CapeSyncPayload::playerId,
                 PacketCodecs.STRING, CapeSyncPayload::capeName,
                 CapeSyncPayload::new
             );
@@ -71,5 +71,21 @@ public class NetworkManager {
         public Id<? extends CustomPayload> getId() {
             return ID;
         }
+    }
+    
+    // Custom UUID codec since PacketCodecs.UUID isn't available in 1.21.1
+    private static PacketCodec<RegistryByteBuf, UUID> createUuidCodec() {
+        return new PacketCodec<RegistryByteBuf, UUID>() {
+            @Override
+            public UUID decode(RegistryByteBuf buf) {
+                return new UUID(buf.readLong(), buf.readLong());
+            }
+            
+            @Override
+            public void encode(RegistryByteBuf buf, UUID uuid) {
+                buf.writeLong(uuid.getMostSignificantBits());
+                buf.writeLong(uuid.getLeastSignificantBits());
+            }
+        };
     }
 }
