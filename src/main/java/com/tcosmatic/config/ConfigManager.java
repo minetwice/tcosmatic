@@ -50,7 +50,26 @@ public class ConfigManager {
     public static class Config {
         public String selectedCape = "";
         public boolean showCapeButton = true;
+        public ButtonPosition buttonPosition = ButtonPosition.TOP_RIGHT;
         
         public Config() {}
+        
+        public enum ButtonPosition {
+            TOP_RIGHT("Top Right"),
+            TOP_LEFT("Top Left"),
+            BOTTOM_RIGHT("Bottom Right"),
+            BOTTOM_LEFT("Bottom Left"),
+            CENTER_BELOW("Below Menu");
+            
+            private final String displayName;
+            
+            ButtonPosition(String displayName) {
+                this.displayName = displayName;
+            }
+            
+            public String getDisplayName() {
+                return displayName;
+            }
+        }
     }
 }
