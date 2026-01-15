@@ -11,7 +11,10 @@ base {
 }
 
 repositories {
-	maven { url 'https://maven.terraformersmc.com/releases/' }
+	maven { 
+		name = "TerraformersMC"
+		url = "https://maven.terraformersmc.com/releases/" 
+	}
 }
 
 dependencies {
@@ -20,8 +23,10 @@ dependencies {
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 	
-	// Mod Menu integration
-	modImplementation "com.terraformersmc:modmenu:11.0.1"
+	// Mod Menu - Optional, provides config screen integration
+	modImplementation("com.terraformersmc:modmenu:11.0.3") {
+		exclude(group: "net.fabricmc.fabric-api")
+	}
 }
 
 processResources {
@@ -54,7 +59,6 @@ publishing {
 			from components.java
 		}
 	}
-
 	repositories {
 	}
 }
